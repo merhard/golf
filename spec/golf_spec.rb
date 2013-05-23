@@ -45,11 +45,19 @@ describe Scorecard do
 
   end
 
+end
+
+describe Golf do
+  let(:round) {round = Golf.new}
+
+  it 'prints name' do
+    name = "Tiger Woods"
+    expect(round.name_printer(name)).to include(name)
+  end
+
   it 'outputs each player strokes per hole'
   it 'displays resulting score per hole'
   it 'calculates total score'
-
-
 
 end
 
