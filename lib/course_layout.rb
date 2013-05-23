@@ -8,10 +8,6 @@ class CourseLayout
   end
 
   def course_layout_data_loader
-    course_layout = CSV.read(@file_path)[0]
-  end
-
-  def get_course_layout_data
-    @course_layout_data = course_layout_data_loader
+    @course_layout_data = CSV.read(@file_path)[0]
   end
 end
