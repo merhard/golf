@@ -1,7 +1,5 @@
-require_relative 'leaderboard_printer'
-
-
 class ScorecardPrinter
+  attr_accessor :scores_array, :course
 
   def initialize(scores_array, course)
     @scores_array = scores_array
@@ -26,13 +24,10 @@ class ScorecardPrinter
 
       puts "==\n\n"
 
-      leaderboard = LeaderboardPrinter.new(distance, score, key)
-      leaderboard_hash.merge!(leaderboard.construct_sortable_leaderboard)
+      leaderboard_hash.merge!({key => {:score => score, :distance => distance}})
     end
 
-    leaderboard = LeaderboardPrinter.new
-    sorted_leaderboard = leaderboard.sort_leaderboard(leaderboard_hash)
-    leaderboard.print_leaderboard(sorted_leaderboard)
+    leaderboard_hash
   end
 
 

@@ -1,13 +1,4 @@
 class LeaderboardPrinter
-  def initialize(distance = nil, score = nil, name = nil)
-    @distance = distance
-    @score = score
-    @name = name
-  end
-
-  def construct_sortable_leaderboard
-    leaderboard_entry = {@name => {:score => @score, :distance => @distance}}
-  end
 
   def sort_leaderboard(leaderboard)
     leaderboard.sort_by { |k, v| v[:score] }

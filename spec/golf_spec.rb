@@ -48,8 +48,29 @@ describe Scorecard do
 end
 
 describe ScorecardPrinter do
-  let(:golf) {golf = Golf.new}
-  let(:printer) {printer = golf.print}
+  let(:printer) do
+    test_scores_array = [1,2,3]
+    test_course_array = [1,2,3]
+    printer = ScorecardPrinter.new(test_scores_array, test_course_array)
+  end
+
+
+  it 'accepts scores and a course' do
+    test_scores = [6, 5, 4]
+    test_course = [3, 2, 1]
+    printer = ScorecardPrinter.new(test_scores, test_course)
+    expect(printer.scores_array).to eql([6, 5, 4])
+    expect(printer.course).to eql([3, 2, 1])
+  end
+
+
+  describe 'print_scoreboard' do
+
+    it 'prints the scoreboard'
+
+    it 'returns a list of players and their total scores'
+
+  end
 
 
   describe 'name_printer' do
@@ -176,6 +197,38 @@ describe ScorecardPrinter do
       distance = printer.distance_from_par(score, par)
       expect(distance).to eql(-1)
     end
+
+  end
+
+end
+
+describe LeaderboardPrinter do
+  let(:leaderboard) {leaderboard = LeaderboardPrinter.new}
+
+  describe 'sort_leaderboard' do
+
+    it 'sorts the golfers by score'
+
+  end
+
+
+  describe 'print_leaderboard' do
+
+    it 'prints the leaderboard'
+
+  end
+
+end
+
+describe Golf do
+  let(:golf) {golf = Golf.new}
+
+  it ''
+
+
+  describe 'printer' do
+
+    it ''
 
   end
 
