@@ -47,102 +47,137 @@ describe Scorecard do
 
 end
 
-describe Golf do
-  let(:round) {round = Golf.new}
+describe ScorecardPrinter do
+  let(:golf) {golf = Golf.new}
+  let(:printer) {printer = golf.print}
 
-  it 'prints name' do
-    name = "Tiger Woods"
-    expect(round.name_printer(name)).to include(name)
+
+  describe 'name_printer' do
+
+    it 'prints name' do
+      name = "Tiger Woods"
+      expect(printer.name_printer(name)).to include(name)
+    end
+
   end
 
-  it 'iterates through all hole scores' do
-    test_array = [1,2,3]
-    number_of_holes = round.hole_score_printer_iterator(test_array)
-    expect(number_of_holes).to eql(3)
+
+  describe 'hole_score_printer_iterator' do
+
+    it 'iterates through all hole scores' do
+      test_array = [1,2,3]
+      number_of_holes = printer.hole_score_printer_iterator(test_array)
+      expect(number_of_holes).to eql(3)
+    end
+
   end
 
-  it 'stringifies hole scores' do
-    hole_number = 5
-    score = 2
-    string = round.hole_score_stringifier(hole_number, score)
-    expect(string).to include('Hole 5: 2')
+
+  describe 'hole_score_stringifier' do
+
+    it 'stringifies hole scores' do
+      hole_number = 5
+      score = 2
+      string = printer.hole_score_stringifier(hole_number, score)
+      expect(string).to include('Hole 5: 2')
+    end
+
   end
 
-  it 'displays hole-in-ones' do
-    score = 1
-    par = 5
-    result_string = round.result(score, par)
-    expect(result_string).to include('Hole-in-One')
+
+  describe 'result' do
+
+    it 'displays hole-in-ones' do
+      score = 1
+      par = 5
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Hole-in-One')
+    end
+
+    it 'displays eagles' do
+      score = 2
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Eagle')
+    end
+
+    it 'displays birdies' do
+      score = 3
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Birdie')
+    end
+
+    it 'displays pars' do
+      score = 4
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Par')
+    end
+
+    it 'displays bogies' do
+      score = 5
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Bogey')
+    end
+
+    it 'displays double bogies' do
+      score = 6
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Double Bogey')
+    end
+
+    it 'displays triple bogies' do
+      score = 7
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to include('Triple Bogey')
+    end
+
+    it 'displays nothing if worse than triple bogey' do
+      score = 8
+      par = 4
+      result_string = printer.result(score, par)
+      expect(result_string).to eql('')
+    end
+
   end
 
-  it 'displays eagles' do
-    score = 2
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Eagle')
+
+  describe 'total_score' do
+
+    it 'calculates total score' do
+      test_scores = [1,2,3]
+      score = printer.total_score(test_scores)
+      expect(score).to eql(6)
+    end
+
   end
 
-  it 'displays birdies' do
-    score = 3
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Birdie')
+
+  describe 'par_for_the_course' do
+
+    it 'calculates par for the course' do
+      test_course = [1,2,3]
+      par = printer.par_for_the_course(test_course)
+      expect(par).to eql(6)
+    end
+
   end
 
-  it 'displays pars' do
-    score = 4
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Par')
-  end
 
-  it 'displays bogies' do
-    score = 5
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Bogey')
-  end
+  describe 'distance_from_par' do
 
-  it 'displays double bogies' do
-    score = 6
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Double Bogey')
-  end
+    it 'calculates distance from par' do
+      score = 3
+      par = 4
+      distance = printer.distance_from_par(score, par)
+      expect(distance).to eql(-1)
+    end
 
-  it 'displays triple bogies' do
-    score = 7
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to include('Triple Bogey')
   end
-
-  it 'displays nothing if worse than triple bogey' do
-    score = 8
-    par = 4
-    result_string = round.result(score, par)
-    expect(result_string).to eql('')
-  end
-
-  it 'calculates total score' do
-    test_scores = [1,2,3]
-    score = round.total_score(test_scores)
-    expect(score).to eql(6)
-  end
-
-  it 'calculates par for the course' do
-    test_course = [1,2,3]
-    par = round.par_for_the_course(test_course)
-    expect(par).to eql(6)
-  end
-
-  it 'calculates distance from par' do
-    score = 3
-    par = 4
-    distance = round.distance_from_par(score, par)
-    expect(distance).to eql(-1)
-  end
-
 
 end
 
