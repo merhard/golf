@@ -3,7 +3,10 @@ require 'rspec'
 require_relative '../lib/golf'
 
 describe CourseLayout do
-  let(:course) {course = CourseLayout.new}
+  let(:course) do
+    file_path = 'default_course_layout.csv'
+    course = CourseLayout.new(file_path)
+  end
 
   it "accepts a file path" do
     file_path = "/fake/file/path.csv"
@@ -23,7 +26,10 @@ describe CourseLayout do
 end
 
 describe Scorecard do
-  let(:scorecard) {scorecard = Scorecard.new}
+  let(:scorecard) do
+    file_path = 'default_scorecard.csv'
+    scorecard = Scorecard.new(file_path)
+  end
 
   it "accepts a file path" do
     file_path = "/fake/file/path.csv"
@@ -49,26 +55,31 @@ end
 
 describe ScorecardPrinter do
   let(:printer) do
-    test_scores_array = [1,2,3]
-    test_course_array = [1,2,3]
-    printer = ScorecardPrinter.new(test_scores_array, test_course_array)
+    test_scores_hash = {"Player1"=>[1,2,3], "Player2"=>[4,5,6]}
+    test_course_array = [3,4,5]
+    printer = ScorecardPrinter.new(test_scores_hash, test_course_array)
   end
 
 
   it 'accepts scores and a course' do
-    test_scores = [6, 5, 4]
+    test_scores = {"Player"=>[6, 5, 4]}
     test_course = [3, 2, 1]
     printer = ScorecardPrinter.new(test_scores, test_course)
-    expect(printer.scores_array).to eql([6, 5, 4])
+    expect(printer.scores_hash).to eql({"Player"=>[6, 5, 4]})
     expect(printer.course).to eql([3, 2, 1])
   end
 
 
   describe 'print_scoreboard' do
 
-    it 'prints the scoreboard'
+    it 'returns a list of players, their total scores, and their distance from par' do
+      player1_score = 1 + 2 + 3
+      player2_score = 4 + 5 + 6
+      player1_distance = 1-3 + 2-4 + 3-5
+      player2_distance = 4-3 + 5-4 + 6-5
 
-    it 'returns a list of players and their total scores'
+      expect(printer.print_scoreboard).to eql({"Player1"=>{:score=>player1_score, :distance=>player1_distance}, "Player2"=>{:score=>player2_score, :distance=>player2_distance}})
+    end
 
   end
 
@@ -204,17 +215,29 @@ end
 
 describe LeaderboardPrinter do
   let(:leaderboard) {leaderboard = LeaderboardPrinter.new}
+  let(:unsorted_leaderboard) {unsorted_leaderboard = {"Player1"=>{:score=>2},
+                              "Player2"=>{:score=>1}}}
+
 
   describe 'sort_leaderboard' do
 
-    it 'sorts the golfers by score'
+    it 'sorts the golfers by score' do
+      sorted_leaderboard = leaderboard.sort_leaderboard(unsorted_leaderboard)
+
+      expect(sorted_leaderboard[0][0]).to eql('Player2')
+      expect(sorted_leaderboard[1][0]).to eql('Player1')
+    end
 
   end
 
 
   describe 'print_leaderboard' do
 
-    it 'prints the leaderboard'
+    it 'prints all golfers on leaderboard' do
+      number_of_golfers = leaderboard.print_leaderboard(unsorted_leaderboard)
+
+      expect(number_of_golfers).to eql(2)
+    end
 
   end
 
@@ -223,17 +246,44 @@ end
 describe Golf do
   let(:golf) {golf = Golf.new}
 
-  it ''
+  it "accepts two file paths" do
+    file_path1 = "/fake/file/path1.csv"
+    file_path2 = "/fake/file/path2.csv"
+
+    golf = Golf.new(file_path1, file_path2)
+
+    expect(golf.course_file).to be file_path1
+    expect(golf.scores_file).to be file_path2
+  end
 
 
-  describe 'printer' do
+  describe 'course_layout' do
 
-    it ''
+    it 'returns information from course file' do
+      #using default_course_layout.csv
+      course_info = golf.course_layout
+      expected_return = ["4","5","4","3","4","3","4","5","4","4","4","3","5","4","5","3","4","4"]
+
+      expect(course_info).to eql(expected_return)
+    end
+
+  end
+
+
+  describe 'scorecard' do
+
+    it 'returns information from scorecard file' do
+      #using default_scorecard.csv
+      scorecard_info = golf.scorecard
+      expected_return = {"Tiger Woods"=>["4","4","3","3","3","1","3","3","4","3","4","3","5","4","8","3","8","4"],
+                          "Sergio Garcia"=>["5","5","4","3","4","3","5","4","4","4","6","2","4","5","5","2","4","4"]}
+
+      expect(scorecard_info).to eql(expected_return)
+    end
 
   end
 
 end
-
 
 
 

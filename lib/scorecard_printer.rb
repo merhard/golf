@@ -1,8 +1,8 @@
 class ScorecardPrinter
-  attr_accessor :scores_array, :course
+  attr_reader :scores_hash, :course
 
-  def initialize(scores_array, course)
-    @scores_array = scores_array
+  def initialize(scores_hash, course)
+    @scores_hash = scores_hash
     @course = course
   end
 
@@ -10,7 +10,7 @@ class ScorecardPrinter
   def print_scoreboard
     leaderboard_hash ={}
 
-    @scores_array.each do |key, value|
+    @scores_hash.each do |key, value|
       puts name_printer(key)
 
       hole_score_printer_iterator(value)

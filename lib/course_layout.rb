@@ -1,9 +1,9 @@
 require 'csv'
 
 class CourseLayout
-  attr_accessor :file_path, :course_layout_data
+  attr_reader :file_path, :course_layout_data
 
-  def initialize(file_path = 'default_course_layout.csv')
+  def initialize(file_path)
     @file_path = file_path
   end
 

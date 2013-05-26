@@ -5,19 +5,23 @@ class LeaderboardPrinter
   end
 
   def print_leaderboard(leaderboard)
-    place = 1
+    place = 0
+
     puts "LEADERBOARD"
 
     leaderboard.each do |leader|
+      place += 1
+
       distance = leader[1][:distance]
       score = leader[1][:score]
       name = leader[0]
 
       puts "#{place}: #{name} #{score} #{distance}"
-
-      place += 1
     end
+
     puts "\n\n"
+
+    place
   end
 
 end
